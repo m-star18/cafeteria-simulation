@@ -13,6 +13,26 @@ PENALTY_SCORE = [-20, -30, -10, -40, -50]
 
 
 class Cafeteria:
+    """
+    食堂のシミュレーションライブラリ
+
+    Attributes
+    ----------
+    self.table: int
+        食堂のテーブルの数。
+    self.number: list of int
+        テーブル毎の席の数。
+    self.seats: list of int
+        席の状態をintで管理している配列。
+    self.group_member: collections.deque of int
+        10ターン後までに来るグループの人数。
+    self.score: list of int
+        各ターンのシミュレーションの合計スコア。
+    self.flag: int
+        現在のターンで座れた人数。
+    self.index: int
+        現在のターン。
+    """
 
     def __init__(self, data, time):
         self.table = data[0]
