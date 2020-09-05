@@ -91,3 +91,18 @@ class Cafeteria:
             self.score[self.index] += self.group_member[0] * PENALTY_SCORE[4]
 
         self.flag = 0
+
+    def run(self, group):
+        if len(group) > self.group_member[0]:
+            print('1ターンに来る人を指定する上限を超えています。')
+            exit()
+
+        self.index += 1
+        for place in group:
+            if self.seats[place[0]][place[1]] == -1:
+                self.seats[place[0]][place[1]] = 0
+                self.score[self.index] += SIT_SCORE
+                self.flag += 1
+
+        self.penalty()
+        self.score[self.index] += self.score[self.index - 1]
