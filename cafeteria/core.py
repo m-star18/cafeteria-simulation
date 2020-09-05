@@ -66,6 +66,9 @@ class Cafeteria:
         self.index = 0
 
     def make_next_group(self):
+        """
+        次のターンの状態を追加する。
+        """
         self.group_member.popleft()
         self.group_member.append(random.randint(1, MAX_MEMBER))
         for y in range(self.table):
@@ -76,6 +79,38 @@ class Cafeteria:
                         self.seats[y][x] = 0
 
     def penalty(self):
+        """
+        毎ターンのペナルティを計算する。
+
+        Parameter
+        ----------
+        penalty1_flag: list of bool
+            ペナルティ1のフラグ。
+        penalty3_count: int
+            探索積みの人数をカウント。
+        penalty3_flag: int
+            ペナルティ3のフラグ。
+        penalty4_flag: bool
+            ペナルティ4のフラグ。
+
+        Notes
+        -----
+        ペナルティ1
+            -20点
+            他の席が空いているのに知らない人が隣りに座ってきた場合。
+        ペナルティ2
+            -30点
+            奇数グループの対面に相手が座った場合。
+        ペナルティ3
+            -10点
+            グループの人数を分けた場合。
+        ペナルティ4
+            -40点
+            ペナルティ3において分割しすぎてしまい、孤食が出た場合。
+        ペナルティ5
+            -50点
+            人が座れていなかった場合。
+        """
         penalty1_flag = [False, False]
         penalty3_count = 0
         penalty3_flag = 0
