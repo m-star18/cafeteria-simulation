@@ -1,3 +1,3 @@
-from cafeteria import core
+from cafe import core
 
 Cafeteria = core.Cafeteria

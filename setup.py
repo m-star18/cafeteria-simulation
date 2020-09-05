@@ -15,16 +15,16 @@ def main():
         readme = fp.read()
 
     setuptools.setup(
-        name='cafeteria',
-        version='0.0.1',
-        description='Python package for cafeteria simulation',
+        name='cafeteria-simulation',
+        version='0.0.2',
+        description='Python package for cafe simulation',
         long_description=readme,
         long_description_content_type='text/markdown',
         url='https://github.com/m-star18/cafeteria-simulation',
         license='Apache Software License 2.0',
         author='Ryusei Ito',
         author_email='31807@toyota.kosen-ac.jp',
-        packages=['cafeteria'],
+        packages=['cafe'],
         install_requires=read_requirements(),
         python_requires='>=3.6, <3.9',
     )
