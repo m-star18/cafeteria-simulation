@@ -35,6 +35,26 @@ class Cafeteria:
     """
 
     def __init__(self, data, time):
+        """
+        Parameters
+        ----------
+        data: list
+            食堂のデータ。
+            data[0]: int
+                食堂のテーブルの数。
+            data[1]: list of int
+                食堂のテーブル毎の席の数。
+            data[2]: list of int
+                席の状態をintで管理している配列。
+        time: int
+            シミュレーションを行う時間
+
+        Notes
+        -----
+        self.seatsにある値について
+        -1 -> 空席
+        n -> 直近nターンで埋まった席
+        """
         self.table = data[0]
         self.number = data[1]
         self.seats = data[2]
