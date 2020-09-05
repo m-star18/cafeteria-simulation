@@ -34,3 +34,60 @@ class Cafeteria:
                     self.seats[y][x] += 1
                     if self.seats[y][x] == OUT_TIME:
                         self.seats[y][x] = 0
+
+    def penalty(self):
+        penalty1_flag = [False, False]
+        penalty3_count = 0
+        penalty3_flag = 0
+        penalty4_flag = True
+
+        for y in range(self.table):
+            # ペナルティ1
+            if all(self.seats[y][x] == -1 for x in range(self.number[y])):
+                penalty1_flag[1] = True
+
+            for x in range(self.number[y]):
+                if self.seats[y][x] != 0:
+                    continue
+
+                # ペナルティ2
+                if x % 2 == 0 and self.seats[y][x + 1] != -1 and self.seats[y][x] != self.seats[y][x + 1]:
+                    penalty1_flag[0] = True
+                    self.score[self.index] += PENALTY_SCORE[1]
+
+                # ペナルティ4
+                if x > 0:
+                    if x > 1:
+                        if self.seats[y][x - 2] == self.seats[y][x]:
+                            penalty4_flag = False
+                    if self.seats[y][x - 1] == self.seats[y][x]:
+                        penalty4_flag = False
+
+                if x + 1 < self.number[y]:
+                    if x + 2 < self.number[y]:
+                        if self.seats[y][x + 2] == self.seats[y][x]:
+                            penalty4_flag = False
+                    # ペナルティ3
+                    if self.seats[y][x + 1] == self.seats[y][x]:
+                        penalty3_count += 1
+                        penalty4_flag = False
+                    else:
+                        if penalty3_count != self.number[y]:
+                            penalty3_flag += 1
+
+                self.score[self.index] += penalty3_flag * PENALTY_SCORE[2]
+
+                if penalty4_flag:
+                    self.score[self.index] += PENALTY_SCORE[3]
+
+        if all(penalty1_flag):
+            self.score[self.index] += PENALTY_SCORE[0]
+
+        # ペナルティ5
+        if self.group_member[0] == self.flag:
+            self.make_next_group()
+        else:
+            self.group_member[0] -= self.flag
+            self.score[self.index] += self.group_member[0] * PENALTY_SCORE[4]
+
+        self.flag = 0
