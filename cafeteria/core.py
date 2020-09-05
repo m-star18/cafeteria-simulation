@@ -106,3 +106,11 @@ class Cafeteria:
 
         self.penalty()
         self.score[self.index] += self.score[self.index - 1]
+
+    def show(self):
+        plt.plot(range(self.index + 1), self.score)
+        plt.title("total score")
+        plt.xlabel("time")
+        plt.ylabel("score")
+        plt.grid(True)
+        plt.show()
