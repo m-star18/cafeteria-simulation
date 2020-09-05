@@ -1,6 +1,6 @@
 import unittest
 
-from cafeteria import Cafeteria
+from cafe import Cafeteria
 
 
 class TestCombination(unittest.TestCase):

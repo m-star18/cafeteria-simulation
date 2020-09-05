@@ -1,4 +1,4 @@
-from cafeteria import Cafeteria
+from cafe import Cafeteria
 
 
 TIME = 20
