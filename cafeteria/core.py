@@ -24,3 +24,13 @@ class Cafeteria:
         self.score = [0] * (time + 1)
         self.flag = 0
         self.index = 0
+
+    def make_next_group(self):
+        self.group_member.popleft()
+        self.group_member.append(random.randint(1, MAX_MEMBER))
+        for y in range(self.table):
+            for x in range(self.number[y]):
+                if self.seats[y][x] != -1:
+                    self.seats[y][x] += 1
+                    if self.seats[y][x] == OUT_TIME:
+                        self.seats[y][x] = 0
