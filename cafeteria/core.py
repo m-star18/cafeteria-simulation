@@ -168,6 +168,14 @@ class Cafeteria:
         self.flag = 0
 
     def run(self, group):
+        """
+        シミュレーションを実行する。
+
+        Parameters
+        ----------
+        group: list of list
+            食堂のデータ。
+        """
         if len(group) > self.group_member[0]:
             print('1ターンに来る人を指定する上限を超えています。')
             exit()
