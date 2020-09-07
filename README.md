@@ -18,7 +18,33 @@ pip install cafeteria-simulation
 
 ## Usage
 
+The easiest simulation to perform
 
+```python
+from cafe import Cafeteria
+
+
+TIME = 20
+TABLE = 30
+NUMBER = [6] * TABLE
+SEATS = [[-1] * 6 for _ in range(TABLE)]
+
+cafeteria_data = [TABLE, NUMBER, SEATS]
+env = Cafeteria(cafeteria_data, TIME)
+
+for _ in range(TIME):
+    env.run([])
+
+# A graph showing the change in scores
+env.show()
+```
+
+You can specify it by assigning the coordinates [table number, seat number] to run().
+
+Also, you can refer to the number of people in group_member up to 10 groups.
+
+### Sample
+- [greedy.py](https://github.com/m-star18/cafeteria-simulation/blob/master/sample/greedy.py)
 
 ## Contributing
 
