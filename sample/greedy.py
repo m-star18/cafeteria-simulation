@@ -1,28 +1,26 @@
-from cafe import Cafeteria
+from cafe import Cafeteria, TOYOTA
 
 
-TIME = 20
-TABLE = 30
-NUMBER = [6] * TABLE
-SEATS = [[-1] * 6 for _ in range(TABLE)]
+TIME = 100
 
 
-def greedy(next_member, y, x, flag):
+def greedy(next_member, y, x, table, number):
     res = []
     for _ in range(next_member):
-        if flag == x:
+        if number == x:
             x = 0
             y += 1
+        if table == y:
+            y = 0
         res.append([y, x])
         x += 1
 
     return res, y, x
 
 
-cafeteria_data = [TABLE, NUMBER, SEATS]
 y, x = 0, 0
-env = Cafeteria(cafeteria_data, TIME)
+env = Cafeteria(TOYOTA.data, TIME)
 for _ in range(TIME):
-    process, y, x = greedy(env.group_member[0], y, x, 6)
+    process, y, x = greedy(env.group_member[0], y, x, TOYOTA.TABLE, TOYOTA.NUMBER)
     env.run(process)
 env.show()
