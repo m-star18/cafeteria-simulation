@@ -202,10 +202,16 @@ class Cafeteria:
         self.score[self.index] += self.score[self.index - 1]
 
     def show(self):
-        directory_path = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        plt.plot(range(self.index + 1), self.score)
-        plt.title("total score")
-        plt.xlabel("time")
-        plt.ylabel("score")
-        plt.grid(True)
-        plt.show()
+        directory_path = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + "_simulation"
+        if not os.path.exists(directory_path):
+            os.mkdir(directory_path)
+
+        make_plot_graph(range(self.index + 1), self.score, "time", "score", "total_score", directory_path, True)
+
+
+def make_plot_graph(x, y, x_label, y_label, title, path, grid=False):
+    fig = plt.figure(figsize=(6, 4), dpi=72, facecolor='skyblue', linewidth=10, edgecolor='green')
+    ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
+    ax.plot(x, y)
+    ax.grid(grid)
+    fig.savefig(f"{path}/{title}.png", facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
