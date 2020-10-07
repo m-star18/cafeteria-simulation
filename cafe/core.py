@@ -1,15 +1,18 @@
 import random
 import collections
 import matplotlib.pyplot as plt
+import datetime
+import os
 
 
 SHOW_MEMBER = 10
 MAX_MEMBER = 7
-OUT_TIME = 20
+MIN_OUT_TIME = 120
+MAX_OUT_TIME = 240
 SEED = 42
 
 SIT_SCORE = 100
-PENALTY_SCORE = [-20, -30, -10, -40, -50]
+PENALTY_SCORE = [-40, -60, -20, -80, -100]
 
 
 class Cafeteria:
@@ -32,6 +35,8 @@ class Cafeteria:
         現在のターンで座れた人数。
     self.index: int
         現在のターン。
+    self.sum_penalty: list of int
+        ペナルティの累計。
     """
 
     def __init__(self, data, time):
@@ -64,6 +69,7 @@ class Cafeteria:
         self.score = [0] * (time + 1)
         self.flag = 0
         self.index = 0
+        self.sum_penalty = [0] * 5
 
     def make_next_group(self):
         """
@@ -74,9 +80,9 @@ class Cafeteria:
         for y in range(self.table):
             for x in range(self.number[y]):
                 if self.seats[y][x] != -1:
-                    self.seats[y][x] += 1
-                    if self.seats[y][x] == OUT_TIME:
-                        self.seats[y][x] = 0
+                    self.seats[y][x] -= 1
+                    if self.seats[y][x] == 0:
+                        self.seats[y][x] = random.randint(MIN_OUT_TIME, MAX_OUT_TIME)
 
     def penalty(self):
         """
@@ -96,19 +102,19 @@ class Cafeteria:
         Notes
         -----
         ペナルティ1
-            -20点
+            -40点
             他の席が空いているのに知らない人が隣りに座ってきた場合。
         ペナルティ2
-            -30点
+            -60点
             奇数グループの対面に相手が座った場合。
         ペナルティ3
-            -10点
+            -20点
             グループの人数を分けた場合。
         ペナルティ4
-            -40点
+            -80点
             ペナルティ3において分割しすぎてしまい、孤食が出た場合。
         ペナルティ5
-            -50点
+            -100点
             人が座れていなかった場合。
         """
         penalty1_flag = [False, False]
@@ -129,6 +135,7 @@ class Cafeteria:
                 if x % 2 == 0 and self.seats[y][x + 1] != -1 and self.seats[y][x] != self.seats[y][x + 1]:
                     penalty1_flag[0] = True
                     self.score[self.index] += PENALTY_SCORE[1]
+                    self.sum_penalty[1] += 1
 
                 # ペナルティ4
                 if x > 0:
@@ -151,12 +158,15 @@ class Cafeteria:
                             penalty3_flag += 1
 
                 self.score[self.index] += penalty3_flag * PENALTY_SCORE[2]
+                self.sum_penalty[2] += penalty3_flag
 
                 if penalty4_flag:
                     self.score[self.index] += PENALTY_SCORE[3]
+                    self.sum_penalty[3] += 1
 
         if all(penalty1_flag):
             self.score[self.index] += PENALTY_SCORE[0]
+            self.sum_penalty[0] += 1
 
         # ペナルティ5
         if self.group_member[0] == self.flag:
@@ -164,6 +174,7 @@ class Cafeteria:
         else:
             self.group_member[0] -= self.flag
             self.score[self.index] += self.group_member[0] * PENALTY_SCORE[4]
+            self.sum_penalty[4] += self.group_member[0]
 
         self.flag = 0
 
@@ -191,6 +202,7 @@ class Cafeteria:
         self.score[self.index] += self.score[self.index - 1]
 
     def show(self):
+        directory_path = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         plt.plot(range(self.index + 1), self.score)
         plt.title("total score")
         plt.xlabel("time")
