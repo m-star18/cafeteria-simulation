@@ -19,17 +19,12 @@ pip install cafeteria-simulation
 The easiest simulation to perform
 
 ```python
-from cafe import Cafeteria
+from cafe import Cafeteria, TOYOTA
 
 
-TIME = 20
-TABLE = 30
-NUMBER = [6] * TABLE
-SEATS = [[-1] * 6 for _ in range(TABLE)]
+TIME = 100
 
-cafeteria_data = [TABLE, NUMBER, SEATS]
-env = Cafeteria(cafeteria_data, TIME)
-
+env = Cafeteria(TOYOTA.data, TIME)
 for _ in range(TIME):
     env.run([])
 
