@@ -216,3 +216,18 @@ class Cafeteria:
         make_plot_graph(range(self.index + 1), self.score, "time", "score", "Total score", directory_path, grid=True)
         make_plot_graph(labels, self.sum_penalty, "penalty", "count", "Total penalty", directory_path, bar=True)
         make_plot_graph(labels, penalty_score, "", "", "Percentage of points deducted", directory_path, pie=True)
+
+
+def make_plot_graph(x, y, x_label, y_label, title, path, bar=False, grid=False, pie=False):
+    fig = plt.figure(facecolor='skyblue')
+
+    if bar:
+        ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
+        rects = ax.bar(x, y)
+        for rect in rects:
+            height = rect.get_height()
+            ax.annotate(f'{height}',
+                        xy=(rect.get_x() + rect.get_width() / 2, height),
+                        xytext=(0, 2),  # 3 points vertical offset
+                        textcoords="offset points",
+                        ha='center', va='bottom')
