@@ -22,7 +22,7 @@ The easiest simulation to perform
 from cafe import Cafeteria, TOYOTA
 
 
-TIME = 100
+TIME = 300
 
 env = Cafeteria(TOYOTA.data, TIME)
 for _ in range(TIME):
