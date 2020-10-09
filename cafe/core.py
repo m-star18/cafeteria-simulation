@@ -206,15 +206,41 @@ class Cafeteria:
 
     def show(self):
         directory_path = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + "_simulation"
+        labels = ['penalty1', 'penalty2', 'penalty3', 'penalty4', 'penalty5']
+        penalty_score = list(map(lambda x, y: (-x) * y, PENALTY_SCORE, self.sum_penalty))
+
         if not os.path.exists(directory_path):
             os.mkdir(directory_path)
+        print(f'総合得点: {sum(self.score)}, 改善率: {(sum(self.score) / BASIC_SCORE - 1):.2%}')
 
-        make_plot_graph(range(self.index + 1), self.score, "time", "score", "total_score", directory_path, True)
+        make_plot_graph(range(self.index + 1), self.score, "time", "score", "Total score", directory_path, grid=True)
+        make_plot_graph(labels, self.sum_penalty, "penalty", "count", "Total penalty", directory_path, bar=True)
+        make_plot_graph(labels, penalty_score, "", "", "Percentage of points deducted", directory_path, pie=True)
 
 
-def make_plot_graph(x, y, x_label, y_label, title, path, grid=False):
-    fig = plt.figure(figsize=(6, 4), dpi=72, facecolor='skyblue')
-    ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
-    ax.plot(x, y)
-    ax.grid(grid)
+def make_plot_graph(x, y, x_label, y_label, title, path, bar=False, grid=False, pie=False):
+    fig = plt.figure(facecolor='skyblue')
+
+    if bar:
+        ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
+        rects = ax.bar(x, y)
+        for rect in rects:
+            height = rect.get_height()
+            ax.annotate(f'{height}',
+                        xy=(rect.get_x() + rect.get_width() / 2, height),
+                        xytext=(0, 2),  # 3 points vertical offset
+                        textcoords="offset points",
+                        ha='center', va='bottom')
+
+    if grid:
+        fig.subplots_adjust(left=0.2)
+        ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
+        ax.plot(x, y)
+        ax.grid(True)
+
+    if pie:
+        ax = fig.add_subplot(111, title=title)
+        ax.pie(y, autopct="%1.1f%%")
+        ax.legend(x, fontsize=12, bbox_to_anchor=(0.9, 1))
+
     fig.savefig(f"{path}/{title}.png", facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
