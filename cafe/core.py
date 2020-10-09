@@ -192,11 +192,11 @@ class Cafeteria:
         self.index += 1
 
         # グループ毎の滞在時間
-        # stay_time = random.randint(MIN_OUT_TIME, MAX_OUT_TIME)
+        stay_time = random.randint(MIN_OUT_TIME, MAX_OUT_TIME)
 
         for place in group:
             if self.seats[place[0]][place[1]] == -1:
-        #         self.seats[place[0]][place[1]] = stay_time
+                self.seats[place[0]][place[1]] = stay_time
                 self.score[self.index] += SIT_SCORE
                 self.flag += 1
 
