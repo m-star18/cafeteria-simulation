@@ -1,7 +1,7 @@
 from cafe import Cafeteria, TOYOTA
 
 
-TIME = 100
+TIME = 300
 
 
 def greedy(next_member, y, x, table, number):

@@ -7,12 +7,13 @@ import os
 
 SHOW_MEMBER = 10
 MAX_MEMBER = 7
-MIN_OUT_TIME = 120
-MAX_OUT_TIME = 240
+MIN_OUT_TIME = 60
+MAX_OUT_TIME = 120
 SEED = 42
 
 SIT_SCORE = 100
-PENALTY_SCORE = [-40, -60, -20, -80, -100]
+PENALTY_SCORE = [-400, -60, -20, -800, -100]
+BASIC_SCORE = 720980
 
 
 class Cafeteria:
@@ -75,14 +76,10 @@ class Cafeteria:
         """
         次のターンの状態を追加する。
         """
-        self.group_member.popleft()
-        self.group_member.append(random.randint(1, MAX_MEMBER))
         for y in range(self.table):
             for x in range(self.number[y]):
                 if self.seats[y][x] != -1:
                     self.seats[y][x] -= 1
-                    if self.seats[y][x] == 0:
-                        self.seats[y][x] = random.randint(MIN_OUT_TIME, MAX_OUT_TIME)
 
     def penalty(self):
         """
@@ -102,7 +99,7 @@ class Cafeteria:
         Notes
         -----
         ペナルティ1
-            -40点
+            -400点
             他の席が空いているのに知らない人が隣りに座ってきた場合。
         ペナルティ2
             -60点
@@ -111,7 +108,7 @@ class Cafeteria:
             -20点
             グループの人数を分けた場合。
         ペナルティ4
-            -80点
+            -800点
             ペナルティ3において分割しすぎてしまい、孤食が出た場合。
         ペナルティ5
             -100点
@@ -170,7 +167,8 @@ class Cafeteria:
 
         # ペナルティ5
         if self.group_member[0] == self.flag:
-            self.make_next_group()
+            self.group_member.popleft()
+            self.group_member.append(random.randint(1, MAX_MEMBER))
         else:
             self.group_member[0] -= self.flag
             self.score[self.index] += self.group_member[0] * PENALTY_SCORE[4]
@@ -192,13 +190,18 @@ class Cafeteria:
             exit()
 
         self.index += 1
+
+        # グループ毎の滞在時間
+        stay_time = random.randint(MIN_OUT_TIME, MAX_OUT_TIME)
+
         for place in group:
             if self.seats[place[0]][place[1]] == -1:
-                self.seats[place[0]][place[1]] = 0
+                self.seats[place[0]][place[1]] = stay_time
                 self.score[self.index] += SIT_SCORE
                 self.flag += 1
 
         self.penalty()
+        self.make_next_group()
         self.score[self.index] += self.score[self.index - 1]
 
     def show(self):
@@ -210,7 +213,7 @@ class Cafeteria:
 
 
 def make_plot_graph(x, y, x_label, y_label, title, path, grid=False):
-    fig = plt.figure(figsize=(6, 4), dpi=72, facecolor='skyblue', linewidth=10, edgecolor='green')
+    fig = plt.figure(figsize=(6, 4), dpi=72, facecolor='skyblue')
     ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
     ax.plot(x, y)
     ax.grid(grid)

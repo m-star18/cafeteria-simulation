@@ -22,7 +22,7 @@ The easiest simulation to perform
 from cafe import Cafeteria, TOYOTA
 
 
-TIME = 100
+TIME = 300
 
 env = Cafeteria(TOYOTA.data, TIME)
 for _ in range(TIME):
@@ -37,7 +37,9 @@ You can specify it by assigning the coordinates [table number, seat number] to r
 Also, you can refer to the number of people in group_member up to 10 groups.
 
 ### Sample
+
 - [greedy.py](https://github.com/m-star18/cafeteria-simulation/blob/master/sample/greedy.py)
+- [basic.py](https://github.com/m-star18/cafeteria-simulation/blob/master/sample/basic.py)
 
 ## Contributing
 
