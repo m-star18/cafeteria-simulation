@@ -231,3 +231,9 @@ def make_plot_graph(x, y, x_label, y_label, title, path, bar=False, grid=False, 
                         xytext=(0, 2),  # 3 points vertical offset
                         textcoords="offset points",
                         ha='center', va='bottom')
+
+    if grid:
+        fig.subplots_adjust(left=0.2)
+        ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
+        ax.plot(x, y)
+        ax.grid(True)
