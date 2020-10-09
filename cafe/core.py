@@ -201,7 +201,7 @@ class Cafeteria:
                 self.flag += 1
 
         self.penalty()
-        # self.make_next_group()
+        self.make_next_group()
         self.score[self.index] += self.score[self.index - 1]
 
     def show(self):
