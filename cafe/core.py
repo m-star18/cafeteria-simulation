@@ -237,3 +237,10 @@ def make_plot_graph(x, y, x_label, y_label, title, path, bar=False, grid=False, 
         ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
         ax.plot(x, y)
         ax.grid(True)
+
+    if pie:
+        ax = fig.add_subplot(111, title=title)
+        ax.pie(y, autopct="%1.1f%%")
+        ax.legend(x, fontsize=12, bbox_to_anchor=(0.9, 1))
+
+    fig.savefig(f"{path}/{title}.png", facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
