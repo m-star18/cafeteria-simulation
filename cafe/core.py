@@ -14,6 +14,7 @@ SEED = 42
 SIT_SCORE = 100
 PENALTY_SCORE = [-40, -60, -20, -80, -100]
 BASIC_SCORE = 2147300
+MAX_SCORE = 14445000
 
 
 class Cafeteria:
@@ -213,8 +214,8 @@ class Cafeteria:
         if not os.path.exists(directory_path):
             os.mkdir(directory_path)
         # 得点の表示
-        print(f'総合得点: {sum(self.score)}, 改善率: {(sum(self.score) / BASIC_SCORE - 1):.2%}')
-        print(f'理論値: {300 * 96300 // 2} 理論値改善率 {((300 * 96300 // 2) / BASIC_SCORE - 1):.2%}')
+        print(f'総合得点: {sum(self.score)}, 改善率: {((sum(self.score) - BASIC_SCORE) / BASIC_SCORE):.2%}')
+        print(f'理論値: {MAX_SCORE} 理論値改善率 {((MAX_SCORE - BASIC_SCORE) / BASIC_SCORE):.2%}')
         # グラフの作成
         make_plot_graph(range(self.index + 1), self.score, "time", "score", "Total score", directory_path, grid=True)
         make_plot_graph(labels, self.sum_penalty, "penalty", "count", "Total penalty", directory_path, bar=True)
