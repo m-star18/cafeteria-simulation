@@ -122,6 +122,28 @@ class Cafeteria:
         penalty3_flag = 0
         penalty4_flag = 0
 
+        # ペナルティ3, ペナルティ4
+        sit_group.sort()
+        if sit_group > 1:
+            for bf, af in zip(sit_group, sit_group[1:]):
+                if bf[0] == af[0] and bf[0] + 1 == af[1]:
+                    penalty3_count += 1
+                # 隣の席にいなければ分かれているのでペナルティを追加
+                else:
+                    # ペナルティ4の場合
+                    if penalty3_count == 0:
+                        penalty4_flag += 1
+                    # ペナルティ3の場合
+                    else:
+                        penalty3_flag += 1
+                    penalty3_count = 0
+
+        self.score[self.index] += penalty3_flag * PENALTY_SCORE[2]
+        self.sum_penalty[2] += penalty3_flag
+
+        self.score[self.index] += penalty4_flag * PENALTY_SCORE[3]
+        self.sum_penalty[3] += penalty4_flag
+
         for y in range(self.table):
             # ペナルティ1
             if all(self.seats[y][x] == -1 for x in range(self.number[y])):
@@ -136,15 +158,6 @@ class Cafeteria:
                     penalty1_flag[0] = True
                     self.score[self.index] += PENALTY_SCORE[1]
                     self.sum_penalty[1] += 1
-                """
-                self.score[self.index] += penalty3_flag * PENALTY_SCORE[2]
-                self.sum_penalty[2] += penalty3_flag
-
-                if penalty4_flag:
-                    print(self.group_member[0])
-                    self.score[self.index] += PENALTY_SCORE[3]
-                    self.sum_penalty[3] += 1
-                """
 
         if all(penalty1_flag):
             self.score[self.index] += PENALTY_SCORE[0]
