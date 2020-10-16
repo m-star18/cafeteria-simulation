@@ -124,7 +124,7 @@ class Cafeteria:
 
         # ペナルティ3, ペナルティ4
         sit_group.sort()
-        if sit_group > 1:
+        if len(sit_group) > 1:
             for bf, af in zip(sit_group, sit_group[1:]):
                 if bf[0] == af[0] and bf[0] + 1 == af[1]:
                     penalty3_count += 1
