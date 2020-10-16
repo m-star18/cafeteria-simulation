@@ -124,19 +124,19 @@ class Cafeteria:
 
         # ペナルティ3, ペナルティ4
         sit_group.sort()
-        if len(sit_group) > 1:
-            for bf, af in zip(sit_group, sit_group[1:]):
-                if bf[0] == af[0] and bf[0] + 1 == af[1]:
-                    penalty3_count += 1
-                # 隣の席にいなければ分かれているのでペナルティを追加
+        print(sit_group, sit_group[1:])
+        for bf, af in zip(sit_group, sit_group[1:]):
+            if bf[0] == af[0] and bf[1] + 1 == af[1]:
+                penalty3_count += 1
+            # 隣の席にいなければ分かれているのでペナルティを追加
+            else:
+                # ペナルティ4の場合
+                if penalty3_count == 0:
+                    penalty4_flag += 1
+                # ペナルティ3の場合
                 else:
-                    # ペナルティ4の場合
-                    if penalty3_count == 0:
-                        penalty4_flag += 1
-                    # ペナルティ3の場合
-                    else:
-                        penalty3_flag += 1
-                    penalty3_count = 0
+                    penalty3_flag += 1
+                penalty3_count = 0
 
         self.score[self.index] += penalty3_flag * PENALTY_SCORE[2]
         self.sum_penalty[2] += penalty3_flag
