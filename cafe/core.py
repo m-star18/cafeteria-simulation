@@ -82,7 +82,7 @@ class Cafeteria:
                 if self.seats[y][x] != -1:
                     self.seats[y][x] -= 1
 
-    def penalty(self):
+    def penalty(self, sit_group):
         """
         毎ターンのペナルティを計算する。
 
@@ -195,14 +195,19 @@ class Cafeteria:
 
         # グループ毎の滞在時間
         stay_time = random.randint(MIN_OUT_TIME, MAX_OUT_TIME)
+
+        # 座れた人用の配列
+        sit_group = []
+
         # 指定の席に座らせる
         for place in group:
             if self.seats[place[0]][place[1]] == -1:
+                sit_group.append(place)
                 self.seats[place[0]][place[1]] = stay_time
                 self.score[self.index] += SIT_SCORE
                 self.flag += 1
 
-        self.penalty()
+        self.penalty(sit_group)
         self.make_next_group()
         self.score[self.index] += self.score[self.index - 1]
 
