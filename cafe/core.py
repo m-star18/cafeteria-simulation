@@ -159,11 +159,11 @@ class Cafeteria:
                 self.sum_penalty[2] += penalty3_flag
 
                 if penalty4_flag:
+                    print(self.group_member[0])
                     self.score[self.index] += PENALTY_SCORE[3]
                     self.sum_penalty[3] += 1
 
         if all(penalty1_flag):
-            print(self.group_member[0])
             self.score[self.index] += PENALTY_SCORE[0]
             self.sum_penalty[0] += 1
 
