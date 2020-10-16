@@ -162,6 +162,7 @@ class Cafeteria:
                     self.sum_penalty[3] += 1
 
         if all(penalty1_flag):
+            print(self.group_member[0])
             self.score[self.index] += PENALTY_SCORE[0]
             self.sum_penalty[0] += 1
 
@@ -193,7 +194,7 @@ class Cafeteria:
 
         # グループ毎の滞在時間
         stay_time = random.randint(MIN_OUT_TIME, MAX_OUT_TIME)
-
+        # 指定の席に座らせる
         for place in group:
             if self.seats[place[0]][place[1]] == -1:
                 self.seats[place[0]][place[1]] = stay_time
@@ -208,11 +209,13 @@ class Cafeteria:
         directory_path = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + "_simulation"
         labels = ['penalty1', 'penalty2', 'penalty3', 'penalty4', 'penalty5']
         penalty_score = list(map(lambda x, y: (-x) * y, PENALTY_SCORE, self.sum_penalty))
-
+        # グラフを保存するディレクトリの作成
         if not os.path.exists(directory_path):
             os.mkdir(directory_path)
+        # 得点の表示
         print(f'総合得点: {sum(self.score)}, 改善率: {(sum(self.score) / BASIC_SCORE - 1):.2%}')
-
+        print(f'理論値: {300 * 96300 // 2} 理論値改善率 {((300 * 96300 // 2) / BASIC_SCORE - 1):.2%}')
+        # グラフの作成
         make_plot_graph(range(self.index + 1), self.score, "time", "score", "Total score", directory_path, grid=True)
         make_plot_graph(labels, self.sum_penalty, "penalty", "count", "Total penalty", directory_path, bar=True)
         make_plot_graph(labels, penalty_score, "", "", "Percentage of points deducted", directory_path, pie=True)
@@ -220,7 +223,7 @@ class Cafeteria:
 
 def make_plot_graph(x, y, x_label, y_label, title, path, bar=False, grid=False, pie=False):
     fig = plt.figure(facecolor='skyblue')
-
+    # 棒グラフの表示
     if bar:
         ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
         rects = ax.bar(x, y)
@@ -231,13 +234,13 @@ def make_plot_graph(x, y, x_label, y_label, title, path, bar=False, grid=False, 
                         xytext=(0, 2),  # 3 points vertical offset
                         textcoords="offset points",
                         ha='center', va='bottom')
-
+    # スコア推移の表示
     if grid:
         fig.subplots_adjust(left=0.2)
         ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
         ax.plot(x, y)
         ax.grid(True)
-
+    # ペナルティ割合の表示
     if pie:
         ax = fig.add_subplot(111, title=title)
         ax.pie(y, autopct="%1.1f%%")
