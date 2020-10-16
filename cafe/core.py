@@ -94,8 +94,10 @@ class Cafeteria:
             探索積みの人数をカウント。
         penalty3_flag: int
             ペナルティ3のフラグ。
-        penalty4_flag: bool
+        penalty4_flag: int
             ペナルティ4のフラグ。
+        sit_group: list of list
+            座れた人の席座標。
 
         Notes
         -----
