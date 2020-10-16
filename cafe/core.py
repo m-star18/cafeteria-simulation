@@ -120,7 +120,7 @@ class Cafeteria:
         penalty1_flag = [False, False]
         penalty3_count = 0
         penalty3_flag = 0
-        penalty4_flag = True
+        penalty4_flag = 0
 
         for y in range(self.table):
             # ペナルティ1
@@ -136,27 +136,7 @@ class Cafeteria:
                     penalty1_flag[0] = True
                     self.score[self.index] += PENALTY_SCORE[1]
                     self.sum_penalty[1] += 1
-
-                # ペナルティ4
-                if x > 0:
-                    if x > 1:
-                        if self.seats[y][x - 2] == self.seats[y][x]:
-                            penalty4_flag = False
-                    if self.seats[y][x - 1] == self.seats[y][x]:
-                        penalty4_flag = False
-
-                if x + 1 < self.number[y]:
-                    if x + 2 < self.number[y]:
-                        if self.seats[y][x + 2] == self.seats[y][x]:
-                            penalty4_flag = False
-                    # ペナルティ3
-                    if self.seats[y][x + 1] == self.seats[y][x]:
-                        penalty3_count += 1
-                        penalty4_flag = False
-                    else:
-                        if penalty3_count != self.number[y]:
-                            penalty3_flag += 1
-
+                """
                 self.score[self.index] += penalty3_flag * PENALTY_SCORE[2]
                 self.sum_penalty[2] += penalty3_flag
 
@@ -164,6 +144,7 @@ class Cafeteria:
                     print(self.group_member[0])
                     self.score[self.index] += PENALTY_SCORE[3]
                     self.sum_penalty[3] += 1
+                """
 
         if all(penalty1_flag):
             self.score[self.index] += PENALTY_SCORE[0]
