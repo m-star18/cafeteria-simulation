@@ -20,6 +20,6 @@ def greedy(member):
 y, x = 0, 0
 env = Cafeteria(TOYOTA.data, TIME)
 for _ in range(TIME):
-    process = new_greedy(env.group_member[0])
+    process = greedy(env.group_member[0])
     env.run(process)
 env.show()
