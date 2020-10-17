@@ -41,3 +41,18 @@ def sit_check(number, count, flag=-1):
             return res, i
 
     return False, False
+
+
+def all_sit_check(member):
+    if member != 7:
+        res, i = sit_check(6, member)
+        if res:
+            return res, i
+    else:
+        res1, i = sit_check(6, 3)
+        if res1:
+            res2, _ = sit_check(6, 4, i)
+            if res2:
+                return res1 + res2, i
+            return res1, False
+    return False, False
