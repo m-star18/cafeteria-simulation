@@ -143,3 +143,25 @@ def get_action(member):
             return res
         # not 4, 2
         res = triple_check(2, 2, 2)
+
+    # 3, 4 -> 4, 3 -> 2, 2, 3 -> 2, 3, 2 -> 3, 2, 2 -> 待機
+    else:
+        res, _ = double_check(3, 4)
+        if res:
+            return res
+        # not 3, 4
+        res, _ = double_check(4, 3)
+        if res:
+            return res
+        # not 4, 3
+        res = triple_check(2, 2, 3)
+        if res:
+            return res
+        # not 2, 2, 3
+        res = triple_check(2, 3, 2)
+        if res:
+            return res
+        # not 2, 3, 2
+        res = triple_check(3, 2, 2)
+
+    return res
