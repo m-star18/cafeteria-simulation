@@ -127,3 +127,19 @@ def get_action(member):
             return res
         # not 2, 3
         res, _ = double_check(3, 2)
+
+    # 3, 3 -> 2, 4 -> 4, 2 -> 2, 2, 2 -> 待機
+    elif member == 6:
+        res, _ = double_check(3, 3)
+        if res:
+            return res
+        # not 3, 3
+        res, _ = double_check(2, 4)
+        if res:
+            return res
+        # not 2, 4
+        res, _ = double_check(4, 2)
+        if res:
+            return res
+        # not 4, 2
+        res = triple_check(2, 2, 2)
