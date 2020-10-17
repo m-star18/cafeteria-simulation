@@ -57,3 +57,13 @@ def all_sit_check(member):
             return res1, False
 
     return False, False
+
+
+def member_check(order, number, flag=-1):
+    for i in order:
+        res, i = sit_check(i, number, flag)
+        if res:
+            return res, i
+
+    return False, False
+
