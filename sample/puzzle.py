@@ -84,3 +84,17 @@ def triple_check(number1, number2, number3):
         if res3:
             return res12 + res3
     return res12
+
+
+def get_action(member):
+    global env
+    # 席が全て空いているとき
+    res, flag = all_sit_check(member)
+    if res and flag > -1:
+        return res
+    # 片方だけ全て席が空いている
+    elif res:
+        member = 4
+    res, _ = sit_check(member, member)
+    if res:
+        return res
