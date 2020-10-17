@@ -102,3 +102,7 @@ def get_action(member):
     # 1 -> 3 -> 2 -> 4 -> 待機
     if member == 1:
         res, _ = member_check(order[member], member)
+
+    # 2 -> 1 -> 3 -> 待機
+    elif member == 2:
+        res, _ = member_check(order[member], member)
