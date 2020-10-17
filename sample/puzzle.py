@@ -24,3 +24,6 @@ def sit_check(number, count, flag=-1):
                 # 初期化
                 table_count = 0
                 index = 0
+        if max_table_count < table_count:
+            max_table_count = table_count
+            max_index = index
