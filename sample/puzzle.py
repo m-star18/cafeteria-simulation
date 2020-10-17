@@ -75,3 +75,12 @@ def double_check(number1, number2):
         if res2:
             return res1 + res2, j
     return False, False
+
+
+def triple_check(number1, number2, number3):
+    res12, j = double_check(number1, number2)
+    if res12:
+        res3, _ = member_check(order[number3], number3, j)
+        if res3:
+            return res12 + res3
+    return res12
