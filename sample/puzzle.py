@@ -27,3 +27,17 @@ def sit_check(number, count, flag=-1):
         if max_table_count < table_count:
             max_table_count = table_count
             max_index = index
+
+        # 座れるかのチェック
+        if max_table_count == number and i > flag:
+            for j, seat in enumerate(table):
+                # 空席の場合
+                if seat == -1 and max_index <= j:
+                    count -= 1
+                    res.append([i, j])
+                    # 全員座った時
+                    if count == 0:
+                        break
+            return res, i
+
+    return False, False
