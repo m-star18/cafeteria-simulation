@@ -4,7 +4,7 @@ from cafe import Cafeteria, TOYOTA
 TIME = 300
 
 
-def new_greedy(member):
+def greedy(member):
     global env
     res = []
     for i, table in enumerate(env.seats):
