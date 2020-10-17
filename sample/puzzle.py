@@ -98,3 +98,7 @@ def get_action(member):
     res, _ = sit_check(member, member)
     if res:
         return res
+
+    # 1 -> 3 -> 2 -> 4 -> 待機
+    if member == 1:
+        res, _ = member_check(order[member], member)
