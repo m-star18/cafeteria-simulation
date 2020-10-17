@@ -165,3 +165,17 @@ def get_action(member):
         res = triple_check(3, 2, 2)
 
     return res
+
+
+TIME = 300
+
+memo = []
+order = [[], [1, 5, 3, 4, 2], [2, 4, 5, 3], [3, 5, 4], [4, 5]]
+
+env = Cafeteria(TOYOTA.data, TIME)
+for i in range(TIME):
+    process = get_action(env.group_member[0])
+    if not process:
+        process = []
+    env.run(process)
+env.show()
