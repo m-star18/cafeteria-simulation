@@ -40,6 +40,8 @@ Also, you can refer to the number of people in group_member up to 10 groups.
 
 - [greedy.py](https://github.com/m-star18/cafeteria-simulation/blob/master/sample/greedy.py)
 - [basic.py](https://github.com/m-star18/cafeteria-simulation/blob/master/sample/basic.py)
+- [_random.py](https://github.com/m-star18/cafeteria-simulation/blob/master/sample/_random.py)
+- [puzzle.py](https://github.com/m-star18/cafeteria-simulation/blob/master/sample/puzzle.py)
 
 ## Contributing
 

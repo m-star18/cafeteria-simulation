@@ -16,7 +16,7 @@ def main():
 
     setuptools.setup(
         name='cafeteria-simulation',
-        version='1.0.1',
+        version='1.0.2',
         description='Python package for cafe simulation',
         long_description=readme,
         long_description_content_type='text/markdown',
