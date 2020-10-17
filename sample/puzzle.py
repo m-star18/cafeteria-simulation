@@ -55,4 +55,5 @@ def all_sit_check(member):
             if res2:
                 return res1 + res2, i
             return res1, False
+
     return False, False
