@@ -12,8 +12,9 @@ MAX_OUT_TIME = 120
 SEED = 42
 
 SIT_SCORE = 100
-PENALTY_SCORE = [-40, -60, -20, -80, -100]
-BASIC_SCORE = 2147300
+PENALTY_SCORE = [-856.75, -60, -20, -856.75, -100]
+BASIC_SCORE = 2745900
+MAX_SCORE = 14445000
 
 
 class Cafeteria:
@@ -81,7 +82,7 @@ class Cafeteria:
                 if self.seats[y][x] != -1:
                     self.seats[y][x] -= 1
 
-    def penalty(self):
+    def penalty(self, sit_group):
         """
         毎ターンのペナルティを計算する。
 
@@ -93,13 +94,15 @@ class Cafeteria:
             探索積みの人数をカウント。
         penalty3_flag: int
             ペナルティ3のフラグ。
-        penalty4_flag: bool
+        penalty4_flag: int
             ペナルティ4のフラグ。
+        sit_group: list of list
+            座れた人の席座標。
 
         Notes
         -----
         ペナルティ1
-            -40点
+            -856.75点
             他の席が空いているのに知らない人が隣りに座ってきた場合。
         ペナルティ2
             -60点
@@ -108,7 +111,7 @@ class Cafeteria:
             -20点
             グループの人数を分けた場合。
         ペナルティ4
-            -80点
+            -856.75点
             ペナルティ3において分割しすぎてしまい、孤食が出た場合。
         ペナルティ5
             -100点
@@ -117,7 +120,28 @@ class Cafeteria:
         penalty1_flag = [False, False]
         penalty3_count = 0
         penalty3_flag = 0
-        penalty4_flag = True
+        penalty4_flag = 0
+
+        # ペナルティ3, ペナルティ4
+        sit_group.sort()
+        for bf, af in zip(sit_group, sit_group[1:]):
+            if bf[0] == af[0] and bf[1] + 1 == af[1]:
+                penalty3_count += 1
+            # 隣の席にいなければ分かれているのでペナルティを追加
+            else:
+                # ペナルティ4の場合
+                if penalty3_count == 0:
+                    penalty4_flag += 1
+                # ペナルティ3の場合
+                else:
+                    penalty3_flag += 1
+                penalty3_count = 0
+
+        self.score[self.index] += penalty3_flag * PENALTY_SCORE[2]
+        self.sum_penalty[2] += penalty3_flag
+
+        self.score[self.index] += penalty4_flag * PENALTY_SCORE[3]
+        self.sum_penalty[3] += penalty4_flag
 
         for y in range(self.table):
             # ペナルティ1
@@ -133,33 +157,6 @@ class Cafeteria:
                     penalty1_flag[0] = True
                     self.score[self.index] += PENALTY_SCORE[1]
                     self.sum_penalty[1] += 1
-
-                # ペナルティ4
-                if x > 0:
-                    if x > 1:
-                        if self.seats[y][x - 2] == self.seats[y][x]:
-                            penalty4_flag = False
-                    if self.seats[y][x - 1] == self.seats[y][x]:
-                        penalty4_flag = False
-
-                if x + 1 < self.number[y]:
-                    if x + 2 < self.number[y]:
-                        if self.seats[y][x + 2] == self.seats[y][x]:
-                            penalty4_flag = False
-                    # ペナルティ3
-                    if self.seats[y][x + 1] == self.seats[y][x]:
-                        penalty3_count += 1
-                        penalty4_flag = False
-                    else:
-                        if penalty3_count != self.number[y]:
-                            penalty3_flag += 1
-
-                self.score[self.index] += penalty3_flag * PENALTY_SCORE[2]
-                self.sum_penalty[2] += penalty3_flag
-
-                if penalty4_flag:
-                    self.score[self.index] += PENALTY_SCORE[3]
-                    self.sum_penalty[3] += 1
 
         if all(penalty1_flag):
             self.score[self.index] += PENALTY_SCORE[0]
@@ -194,13 +191,18 @@ class Cafeteria:
         # グループ毎の滞在時間
         stay_time = random.randint(MIN_OUT_TIME, MAX_OUT_TIME)
 
+        # 座れた人用の配列
+        sit_group = []
+
+        # 指定の席に座らせる
         for place in group:
             if self.seats[place[0]][place[1]] == -1:
+                sit_group.append(place)
                 self.seats[place[0]][place[1]] = stay_time
                 self.score[self.index] += SIT_SCORE
                 self.flag += 1
 
-        self.penalty()
+        self.penalty(sit_group)
         self.make_next_group()
         self.score[self.index] += self.score[self.index - 1]
 
@@ -208,11 +210,13 @@ class Cafeteria:
         directory_path = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + "_simulation"
         labels = ['penalty1', 'penalty2', 'penalty3', 'penalty4', 'penalty5']
         penalty_score = list(map(lambda x, y: (-x) * y, PENALTY_SCORE, self.sum_penalty))
-
+        # グラフを保存するディレクトリの作成
         if not os.path.exists(directory_path):
             os.mkdir(directory_path)
-        print(f'総合得点: {sum(self.score)}, 改善率: {(sum(self.score) / BASIC_SCORE - 1):.2%}')
-
+        # 得点の表示
+        print(f'総合得点: {sum(self.score)}, 改善率: {((sum(self.score) - BASIC_SCORE) / BASIC_SCORE):.2%}')
+        print(f'理論値: {MAX_SCORE} 理論値改善率 {((MAX_SCORE - BASIC_SCORE) / BASIC_SCORE):.2%}')
+        # グラフの作成
         make_plot_graph(range(self.index + 1), self.score, "time", "score", "Total score", directory_path, grid=True)
         make_plot_graph(labels, self.sum_penalty, "penalty", "count", "Total penalty", directory_path, bar=True)
         make_plot_graph(labels, penalty_score, "", "", "Percentage of points deducted", directory_path, pie=True)
@@ -220,7 +224,7 @@ class Cafeteria:
 
 def make_plot_graph(x, y, x_label, y_label, title, path, bar=False, grid=False, pie=False):
     fig = plt.figure(facecolor='skyblue')
-
+    # 棒グラフの表示
     if bar:
         ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
         rects = ax.bar(x, y)
@@ -231,13 +235,13 @@ def make_plot_graph(x, y, x_label, y_label, title, path, bar=False, grid=False, 
                         xytext=(0, 2),  # 3 points vertical offset
                         textcoords="offset points",
                         ha='center', va='bottom')
-
+    # スコア推移の表示
     if grid:
         fig.subplots_adjust(left=0.2)
         ax = fig.add_subplot(111, xlabel=x_label, ylabel=y_label, title=title)
         ax.plot(x, y)
         ax.grid(True)
-
+    # ペナルティ割合の表示
     if pie:
         ax = fig.add_subplot(111, title=title)
         ax.pie(y, autopct="%1.1f%%")
