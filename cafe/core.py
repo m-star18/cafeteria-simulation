@@ -12,8 +12,8 @@ MAX_OUT_TIME = 120
 SEED = 42
 
 SIT_SCORE = 100
-PENALTY_SCORE = [-40, -60, -20, -80, -100]
-BASIC_SCORE = 2147300
+PENALTY_SCORE = [-856.75, -60, -20, -856.75, -100]
+BASIC_SCORE = 2745900
 MAX_SCORE = 14445000
 
 
@@ -102,7 +102,7 @@ class Cafeteria:
         Notes
         -----
         ペナルティ1
-            -40点
+            -856.75点
             他の席が空いているのに知らない人が隣りに座ってきた場合。
         ペナルティ2
             -60点
@@ -111,7 +111,7 @@ class Cafeteria:
             -20点
             グループの人数を分けた場合。
         ペナルティ4
-            -80点
+            -856.75点
             ペナルティ3において分割しすぎてしまい、孤食が出た場合。
         ペナルティ5
             -100点
@@ -124,7 +124,6 @@ class Cafeteria:
 
         # ペナルティ3, ペナルティ4
         sit_group.sort()
-        print(sit_group, sit_group[1:])
         for bf, af in zip(sit_group, sit_group[1:]):
             if bf[0] == af[0] and bf[1] + 1 == af[1]:
                 penalty3_count += 1
