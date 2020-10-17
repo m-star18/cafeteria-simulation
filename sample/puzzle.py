@@ -67,3 +67,11 @@ def member_check(order, number, flag=-1):
 
     return False, False
 
+
+def double_check(number1, number2):
+    res1, i = member_check(order[number1], number1)
+    if res1:
+        res2, j = member_check(order[number2], number2, flag=i)
+        if res2:
+            return res1 + res2, j
+    return False, False
