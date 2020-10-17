@@ -119,3 +119,11 @@ def get_action(member):
             return res
         # not 2, 2
         res, _ = member_check(order[1], 1)
+
+    # 2, 3 -> 3, 2 -> 待機
+    elif member == 5:
+        res, _ = double_check(2, 3)
+        if res:
+            return res
+        # not 2, 3
+        res, _ = double_check(3, 2)
